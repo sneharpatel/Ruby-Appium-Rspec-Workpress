@@ -13,7 +13,9 @@ class HomePage < BasePage
   end
 
   def heading
-    @driver.find_element(:id, 'my_sites_heading')
+    (ENV["platform"] == "ios") ?
+        @driver.find_element(:accessibility_id, "MY SITE") :
+        @driver.find_element(:id, 'my_sites_heading')
   end
 
 end

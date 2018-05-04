@@ -18,12 +18,15 @@ class LoginPasswordPage < BasePage
   end
 
   def enter_password(pw)
-    @driver.find_element(:id, 'input').send_keys pw
+    input = (ENV["platform"] == "ios") ? @driver.find_element(:accessibility_id, "Password") : @driver.find_element(:id, 'input')
+    input.send_keys pw
     self
   end
 
   def next_button
-    @driver.find_element(:id, 'primary_button')
+    (ENV["platform"] == "ios") ?
+        @driver.find_element(:accessibility_id, "Log In Button") :
+        @driver.find_element(:id, 'primary_button')
   end
 
   def next_button_click

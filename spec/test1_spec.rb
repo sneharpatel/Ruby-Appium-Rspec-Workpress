@@ -20,7 +20,10 @@ describe "WordPress App" do
         .select_your_password_link_click
         .enter_password(ENV["wordpress_password"])
         .next_button_click
-    expect(homePage.heading.text). to eq 'My site'
+    (ENV["platform"] == "ios") ?
+        expect(homePage.heading.text) == "MY SITE" :
+        expect(homePage.heading.text) == "My site"
+
   end
 
 end

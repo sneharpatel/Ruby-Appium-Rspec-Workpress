@@ -17,9 +17,9 @@ class LandingPage < BasePage
 
   #:xpath //XCUIElementTypeButton[@name="Log In Button"]
   def login_button
-    (ENV["platform"] == "ios")
-      ? @driver.find_element(:accessibility_id, "Log In Button")
-      : @driver.find_element(:id, 'login_button')
+    (ENV["platform"] == "ios") ?
+        @driver.find_element(:accessibility_id, "Log In Button") :
+        @driver.find_element(:id, 'login_button')
   end
 
   def login_button_click
