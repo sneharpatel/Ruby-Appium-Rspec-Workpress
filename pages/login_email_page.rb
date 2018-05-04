@@ -15,12 +15,17 @@ class LoginEmailPage < BasePage
   end
 
   def enter_email(email)
-    @driver.find_element(:id, 'input').send_keys email
+    input = (ENV["platform"] == "ios")
+      ? @driver.find_element(:xpath, '//XCUIElementTypeTextField[@name="Email address"]/XCUIElementTypeTextField')
+      : @driver.find_element(:id, 'input')
+    input.send_keys email
     self
   end
 
   def next_button
-    @driver.find_element(:id, 'primary_button')
+    (ENV["platform"] == "ios")
+      ? @driver.find_element(:accessibility_id, "Next Button")
+      : @driver.find_element(:id, 'primary_button')
   end
 
   def next_button_click

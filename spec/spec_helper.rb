@@ -10,36 +10,22 @@ rescue
   puts "no page objects found"
 end
 
-
 RSpec.configure do | config |
 
   config.before(:each) do | example |
 
-    # if ENV['platform'] == 'iOS'
-
-    # caps = {
-    #     caps: {
-    #         {
-    #       platformName: "iOS",
-    #       platformVersion: "10.3",
-    #       deviceName: "iPhone 7",
-    #       udid: "AB262226-0136-4C6A-B617-556F9B5334C6",
-    #       automationName: "XCUITest",
-    #       app: ""
-
-    #     }
-    # }
-    #
-    # elsif ENV['platform'] == 'Android'
-    #
-    # else
-    #   raise 'Wrong platform'
-    #
-    # end
-
-
-
-    caps = {
+    if ENV['platform'] == 'ios'
+      caps = {
+        caps: {
+          platformName: "iOS",
+          platformVersion: "11.3",
+          deviceName: "iPhone 7",
+          automationName: "XCUITest",
+          app: ENV["wordpress_app_location"]
+        }
+      }
+    elsif ENV['platform'] == 'android'
+      caps = {
         caps: {
           automationName: "UiAutomator2",
           platformName: "Android",
@@ -49,15 +35,19 @@ RSpec.configure do | config |
           autoLaunch: false,
           autoAcceptAlerts: true,
           appActivity: 'org.wordpress.android.ui.accounts.LoginActivity',
-          app: "/Users/sneha/RubymineProjects/wordpress/WordPress-Android/WordPress/build/outputs/apk/vanilla/debug/WordPress-vanilla-debug.apk"
+          app: ENV["wordpress_app_location"]
         }
-    }
+      }
 
-    caps.merge!({deviceType: "ENV['deviceType']"}) if ENV['deviceType'] != ''
+    else
+      raise 'Wrong platform'
+    end
 
     @driver = Appium::Driver.new(caps)
     @driver.start_driver
-    @driver.start_activity app_package: "org.wordpress.android", app_activity: "org.wordpress.android.ui.accounts.LoginActivity"
+    if ENV['platform'] == 'android'
+      @driver.start_activity app_package: "org.wordpress.android", app_activity: "org.wordpress.android.ui.accounts.LoginActivity"
+    end
     @driver.launch_app
 
 

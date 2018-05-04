@@ -16,7 +16,9 @@ class PasswordLinkSelectionPage < BasePage
   end
 
   def select_your_password_link
-    @driver.find_element(:id, 'org.wordpress.android:id/login_enter_password')
+    (ENV["platform"] == "ios")
+      ? @driver.find_element(:accessibility_id, "Use Password")
+      : @driver.find_element(:id, 'org.wordpress.android:id/login_enter_password')
   end
 
   def select_your_password_link_click
